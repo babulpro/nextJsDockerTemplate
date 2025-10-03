@@ -82,7 +82,7 @@ export default function Page(){
                                       
                                   </div>
                                   <div className="flex justify-between">
-                                    <Link href="/user/registation" className="text-xs p-1 hover:text-slate-500 shadow-2xl">Don't have account?</Link>
+                                    <Link href="/user/registration" className="text-xs p-1 hover:text-slate-500 shadow-2xl">Don't have account?</Link>
                                     <Link href="/user/forgetpassword" className="text-xs p-1 hover:text-slate-500 shadow-2xl">Forget password?</Link>
                                   </div>
                                    

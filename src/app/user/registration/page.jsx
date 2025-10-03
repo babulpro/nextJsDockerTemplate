@@ -7,7 +7,7 @@ import { useState } from "react"
 
 export default function Page(){
     const router =useRouter()
-    const [data,setData]=useState({name:"",email:"",phone:"",password:""})
+    const [data,setData]=useState({name:"",email:"",phone:"",password:"",address:""})
     const InputChange=(name,value)=>{
         setData(pre=>({
             ...pre,
@@ -71,6 +71,9 @@ export default function Page(){
 
                                 <label htmlFor="email">Enter Your phone Number</label><br/>
                                 <input type='text' placeholder='phone number' value={data.phone} onChange={(e)=>InputChange("phone",e.target.value)} className="inputClass text-left w-full" id="email"/> <br/><br/>
+
+                                 <label htmlFor="address">Enter Your Address</label><br/>
+                                <input type='message' placeholder='vill:modon dia,p.o:dhamrai,p.s:dhamrai,dis:dhaka' value={data.address} onChange={(e)=>InputChange("address",e.target.value)} className="inputClass text-left w-full" id="address"/> <br/><br/>
 
                                 <div className="mt-8 ">
                                   <div className="">

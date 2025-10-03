@@ -61,10 +61,10 @@ export async function POST(req) {
 }
 
 
-export async function GET(req) {
-    cookies().delete('token')
-    return NextResponse.json({
-        msg:"request Completed",status:"ok"
-    })   
+// export async function GET(req) {
+//     cookies().delete('token')
+//     return NextResponse.json({
+//         msg:"request Completed",status:"ok"
+//     })   
       
-}
+// }

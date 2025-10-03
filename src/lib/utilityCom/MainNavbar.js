@@ -32,14 +32,14 @@ const MainNavbar = () => {
 
   const logOut = async () => {
     try {
-      const response = await fetch("/api/user/createUser", { 
+      const response = await fetch("/api/user/logOut", { 
         method: "GET",
         cache: 'no-cache'
       });
       
       const json = await response.json();
 
-      if (json.status === "ok") {
+      if (json.status === "success") {
         toast.success("Log Out Success");
         window.location.href = "/";
       }
@@ -161,8 +161,8 @@ const MainNavbar = () => {
                   <ul
                     tabIndex={0}
                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                    <li><a>My Houses</a></li>
-                    <li> <a>My Booking</a> </li>
+                    <li><Link href={"/dashboard/pages/myDashboard/house"}>My Houses</Link></li>
+                    <li><Link href={"/dashboard/pages/myDashboard/book"}>My Booking</Link></li> 
                     <li><a>Settings</a></li>
                     <li>
                       <button
