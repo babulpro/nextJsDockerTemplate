@@ -34,7 +34,8 @@ export default async function RootLayout({ children }) {
                 {
                   token?<MainNavbar/>:<Navbar/>
                 } 
-              </div>                                 
+              </div> 
+                                              
               
               {children}
               <div>

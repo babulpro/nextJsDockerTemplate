@@ -1,0 +1,36 @@
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
+import { DecodedJwtToken } from "@/lib/authFunction/JwtHelper"
+import  prisma  from "@/lib/prisma"
+
+export async function POST(req,res){
+    try{
+        let data = await req.json()
+        const storeCookies = await cookies()
+        const token =await storeCookies.get('token')?.value
+
+        if(!token){
+            return NextResponse.json({ status:"fail",msg:"token not found"})
+        }
+
+        const payload = await DecodedJwtToken(token)
+        data.userId=payload.id
+        console.log(data)
+
+        const newRequest =await prisma.booking.create({
+            data:{
+                ...data
+            }
+        })
+         
+         
+
+         return NextResponse.json({status:"success",data:newRequest})
+
+
+
+    }
+    catch(e){
+        return NextResponse.json({status:"fail",msg:e,data:"notfound"})
+    }
+}
