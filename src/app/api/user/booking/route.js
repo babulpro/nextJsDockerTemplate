@@ -3,6 +3,9 @@ import { NextResponse } from "next/server"
 import { DecodedJwtToken } from "@/lib/authFunction/JwtHelper"
 import  prisma  from "@/lib/prisma"
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function POST(req,res){
     try{
         let data = await req.json()

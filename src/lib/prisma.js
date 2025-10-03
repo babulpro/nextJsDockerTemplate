@@ -1,25 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
-let prisma;
+const globalForPrisma = globalThis;
 
-if (process.env.NODE_ENV === "production") {
-  // For production (Vercel), create a new instance each time
-  // Vercel handles connection pooling automatically
-  prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL,
-      },
-    },
-  });
-} else {
-  // For development, use global to avoid creating multiple instances
-  if (!global.prisma) {
-    global.prisma = new PrismaClient({
-      log: ['query', 'info', 'warn', 'error'],
-    });
-  }
-  prisma = global.prisma;
+const prisma = globalForPrisma.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
 }
 
 export default prisma;

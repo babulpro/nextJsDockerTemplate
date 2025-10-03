@@ -1,11 +1,11 @@
- 
- 
- 
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt"
 import { cookies } from 'next/headers';
 import prisma from "@/lib/prisma";
 import { CreateJwtToken } from "@/lib/authFunction/JwtHelper";
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
   
 
 export async function POST(req) {

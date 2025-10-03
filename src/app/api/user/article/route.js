@@ -3,6 +3,9 @@ import { DecodedJwtToken } from "@/lib/authFunction/JwtHelper"
 import { cookies } from "next/headers"
 import prisma from "@/lib/prisma";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function POST(req){
     try{
         const data = await req.json();

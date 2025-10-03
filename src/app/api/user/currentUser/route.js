@@ -1,8 +1,10 @@
 import { DecodedJwtToken } from "@/lib/authFunction/JwtHelper"
-
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
 
 export async function GET(req,res){
     try{
