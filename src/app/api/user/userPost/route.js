@@ -16,9 +16,7 @@ export async function GET(req,res){
 
          
         const payload = await DecodedJwtToken(token)
-        const id = payload['id']
-
-        console.log("userid",id)
+        const id = payload['id'] 
 
        const data = await prisma.post.findMany({
             where: {
