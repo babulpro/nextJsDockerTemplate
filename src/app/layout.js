@@ -17,8 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Routine App – Plan Your Day, Build Better Habits, and Boost Productivity",
-  description: "Organize your day with Routine App – the daily planner that tracks habits, manages tasks, and saves time. Stay focused, cut distractions, and achieve your goals with smart reminders.",
+  title: "HouseRent – Find Your Perfect Home for Rent Easily | Affordable Flats, Rooms & Apartments",
+  description:
+    "Discover your next home with HouseRent. Browse verified flats, rooms, and apartments for rent in your city. Enjoy a smooth renting experience with real-time listings, budget filters, and trusted landlords – all in one place.",
 };
 
 export default async function RootLayout({ children }) {
