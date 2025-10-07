@@ -7,11 +7,12 @@ export default function BookingRequestsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const url = window.location.origin  || "/api/user/userBookingList";
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch("/api/user/userBookingList");
+        const res = await fetch(`${url}/api/user/userBookingList`);
         const result = await res.json();
        
 
