@@ -20,7 +20,7 @@ export default function ArticlesPage() {
 
         const result = await response.json();
         if (result.status === "success") {
-          const publishedPosts = result.data.filter((post) => post.published === true); 
+          const publishedPosts = result.data.filter((post) => post.published === true);
           setPosts(publishedPosts);
           setFilteredPosts(publishedPosts);
         } else {
@@ -34,7 +34,7 @@ export default function ArticlesPage() {
     };
 
     fetchPosts();
-  }, [1]);
+  }, []);
 
   // 🧭 Filter + Sort logic
   useEffect(() => {
@@ -120,28 +120,30 @@ export default function ArticlesPage() {
     <div className="min-h-screen mt-10 bg-gradient-to-br from-slate-500 to-slate-800">
       {/* Header */}
       <div className="text-center py-12 px-4">
-         
-        <p className="text-slate-300 text-2xl max-w-2xl mx-auto underline">
+        <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
+          🏠 Available Properties
+        </h1>
+        <p className="text-slate-300 text-lg max-w-2xl mx-auto">
           Discover amazing rental properties and find your perfect home
         </p>
       </div>
 
       {/* 🔍 Filters Section */}
-      <div className="container mx-auto px-4 pb-10 flex flex-wrap justify-center gap-4">
+      <div className="container mx-auto px-4 pb-6 flex flex-wrap justify-center gap-4">
         {/* City Search */}
         <input
           type="text"
           placeholder="Search by city..."
           value={searchCity}
           onChange={(e) => setSearchCity(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-500"
+          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
 
         {/* Sort by Price */}
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-500"
+          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="default">Sort by Price</option>
           <option value="lowToHigh">Low to High</option>
@@ -152,7 +154,7 @@ export default function ArticlesPage() {
         <select
           value={propertyType}
           onChange={(e) => setPropertyType(e.target.value)}
-          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-500"
+          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="all">All Types</option>
           <option value="room">Room</option>

@@ -1,145 +1,140 @@
 "use client";
-import React, { useState, useEffect } from "react";
 
-export default function Page() {
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+
+export default function BookingRequestsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch("/api/user/userBookingList", { cache: "no-cache" });
-        if (!response.ok) throw new Error("Failed to fetch bookings");
-        const result = await response.json();
+        const res = await fetch("/api/user/userBookingList");
+        const result = await res.json();
+       
+
         if (result.status === "success") {
-          setBookings(result.data);
+          // Sort newest first
+          const sorted = result.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+          setBookings(sorted);
         } else {
-          throw new Error(result.msg || "Failed to load bookings");
+          setError("Failed to fetch bookings");
         }
-      } catch (e) {
-        setError(e.message || "Failed to load bookings");
+      } catch (err) {
+        setError("An error occurred while fetching data");
       } finally {
         setLoading(false);
       }
     };
+
     fetchBookings();
   }, []);
 
-  const formatDate = (date) =>
-    new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+  const formatDate = (dateString) => {
+    const options = { day: "numeric", month: "short", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  };
 
-  const formatPrice = (price, currency = "BDT") =>
-    new Intl.NumberFormat("en-BD", {
-      style: "currency",
-      currency,
-    }).format(price);
-
-  if (loading)
-    return (
-      <div className="min-h-screen flex justify-center items-center bg-gray-50">
-        <div className="animate-spin h-12 w-12 border-4 border-indigo-600 border-t-transparent rounded-full" />
-      </div>
-    );
+ if (loading) {
+     return (
+       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+         <div className="text-center">
+           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-600 mx-auto mb-4"></div>
+           <p className="text-indigo-700 font-medium">Loading properties...</p>
+         </div>
+       </div>
+     );
+   }
 
   if (error)
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gray-50">
-        <div className="text-center">
-          <p className="text-red-500 text-lg mb-2">❌ {error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg"
-          >
-            Try Again
-          </button>
-        </div>
+      <div className="flex justify-center items-center min-h-screen text-red-600 font-semibold">
+        {error}
+      </div>
+    );
+
+  if (!bookings.length)
+    return (
+      <div className="flex justify-center items-center min-h-screen text-gray-500 font-medium">
+        You don’t have any booking requests yet.
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-white py-12 px-4">
-      <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-10">
-        🧾 My Booking List
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">
+        All Bookin Request Are Here
       </h1>
 
-      {bookings.length === 0 ? (
-        <div className="text-center text-gray-600 mt-20">
-          <p className="text-6xl mb-4">📭</p>
-          <p className="text-xl font-semibold">No bookings yet</p>
-          <p className="text-gray-500 text-sm mt-2">
-            You haven’t booked any properties yet.
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {bookings.map((booking) => {
-            const { post } = booking;
-            if (!post) return null;
-
-            return (
-              <div
-                key={booking.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
+      <div className="grid gap-6">
+        {bookings.map((booking) => {
+          const post = booking.post;
+          return (
+            <div
+              key={booking.id}
+              className="border rounded-xl p-4 shadow-sm hover:shadow-md transition bg-slate-500"
+            >
+              {/* Linked Post */}
+              <Link
+                href={`/dashboard/pages/article/${post.id}`}
+                className="flex items-start gap-4 mb-4 hover:opacity-90"
               >
-                {/* Image */}
-                {post.images?.length > 0 && (
-                  <div className="relative h-48">
-                    <img
-                      src={post.images[0]}
-                      alt={post.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-3 left-3 bg-indigo-600 text-white text-sm px-2 py-1 rounded">
-                      {formatPrice(post.rentPrice, post.currency)}
-                    </div>
-                  </div>
-                )}
-
-                {/* Info */}
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-3">
-                    📍 {post.city}, {post.address}
-                  </p>
-
-                  <div className="flex justify-between items-center text-sm mb-3">
-                    <span className="text-gray-600">
-                      🗓 {formatDate(booking.startDate)} → {formatDate(booking.endDate)}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-center text-sm mb-3">
-                    <span className="text-indigo-700 font-semibold">
-                      Proposed: {formatPrice(booking.proposedPrice, post.currency)}
-                    </span>
-                  </div>
-
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                      booking.status === "PENDING"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : booking.status === "ACCEPTED"
-                        ? "bg-green-100 text-green-700"
-                        : booking.status === "REJECTED"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
-                  >
-                    {booking.status}
-                  </span>
+                <img
+                  src={post.images?.[0] || "/default-house.jpg"}
+                  alt={post.title}
+                  className="w-28 h-28 object-cover rounded-lg border"
+                />
+                <div>
+                  <h2 className="text-lg font-semibold">{post.title}</h2>
+                  <p className="text-slate-900 text-sm">{post.city}</p>
+                  <p className="text-slate-900 text-sm">{post.address}</p>
                 </div>
+              </Link>
+
+              {/* Booking Details */}
+              <div className="grid sm:grid-cols-2 gap-3 text-sm">
+                <p>
+                  <span className="font-semibold">Booking Dates:</span>{" "}
+                  {formatDate(booking.startDate)} → {formatDate(booking.endDate)}
+                </p>
+                <p>
+                  <span className="font-semibold">Proposed Price:</span>{" "}
+                  {booking.proposedPrice.toLocaleString()}{" "}
+                  <span className="text-slate-900">{post.currency}</span>
+                </p>
+                <p className="col-span-2 text-slate-900 italic">
+                  💬 {booking.message || "No message provided."}
+                </p>
               </div>
-            );
-          })}
-        </div>
-      )}
+
+              {/* Status + Timestamp */}
+              <div className="mt-4 flex justify-between items-center">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
+                    booking.status === "PENDING"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : booking.status === "CONFIRMED"
+                      ? "bg-green-100 text-green-700"
+                      : booking.status === "CANCELLED"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-gray-100 text-slate-900"
+                  }`}
+                >
+                  {booking.status}
+                </span>
+
+                <span className="text-xs text-slate-900">
+                  Requested on {formatDate(booking.createdAt)}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

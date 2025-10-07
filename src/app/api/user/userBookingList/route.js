@@ -20,9 +20,6 @@ export async function GET(req,res){
             },
             include:{
                 post:true
-            },
-            orderBy:{
-                createdAt:"desc"
             }
         })
 

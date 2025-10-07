@@ -20,31 +20,24 @@ const Navbar = () => {
                             <ul
                             tabIndex={0}
                             className="menu menu-m dropdown-content bg-base-100 rounded-box z-1 mt-3 w-64 p-2 shadow">
-                                <li> <Link href={'/'}>Home</Link></li>
-                                <li> <Link href={'/dashboard/pages/findHouse'}>Find House</Link></li>
-                                <li> <Link href={'/dashboard/pages/article'}>Rent Your House</Link></li>
-                                <li><Link href={"/dashboard/pages/about"}>About</Link></li>
+                                <li> <Link href={'/'}>Home</Link></li> 
+                                <li> <Link href={'/dashboard/pages/article'}>Post TO Rent</Link></li>
+                                <li><Link href={"/dashboard/pages/about"}>Why Here</Link></li>
                                 <li><Link href={"/dashboard/pages/support"} className="w-full">Support</Link></li>
                                
                             </ul>
                      </div>
                     <div className="hidden md:block w-15 h-15">
-                        <Link href={'/'}>
-                            <Image
-                            src="/routine.png"
-                            width={100}
-                            height={100}
-                            alt="Routine app logo"
-                            />
+                        <Link href={'/'} className="text-2xl">
+                            🏠
                         </Link>
                         </div>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
-                         <li> <Link href={'/'}>Home</Link></li>
-                                <li> <Link href={'/dashboard/pages/findHouse'}>Find House</Link></li>
-                                <li> <Link href={'/dashboard/pages/article'}>Rent Your House</Link></li>
-                                <li><Link href={"/dashboard/pages/about"}>About</Link></li>
+                         <li> <Link href={'/'}>Home</Link></li> 
+                                <li> <Link href={'/dashboard/pages/article'}>Post To Rent</Link></li>
+                                <li><Link href={"/dashboard/pages/about"}>Why Here</Link></li>
                                 <li><Link href={"/dashboard/pages/support"} className="w-full">Support</Link></li>
                     </ul>
                 </div> 

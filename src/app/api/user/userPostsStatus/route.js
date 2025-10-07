@@ -82,13 +82,13 @@ export async function PATCH(req) {
       );
     }
 
-    // Confirm the selected booking
+    // ✅ 1. Confirm the selected booking
     const confirmedBooking = await prisma.booking.update({
       where: { id: bookingId },
       data: { status: "CONFIRMED" },
     });
 
-    // Cancel all other bookings for the same post
+    // ✅ 2. Cancel all other bookings for the same post
     await prisma.booking.updateMany({
       where: {
         postId,
@@ -97,13 +97,20 @@ export async function PATCH(req) {
       data: { status: "CANCELLED" },
     });
 
+    // ✅ 3. Mark the post as unpublished (no longer available)
+    await prisma.post.update({
+      where: { id: postId },
+      data: { published: false },
+    });
+
+    // ✅ 4. Return response
     return NextResponse.json({
       status: "success",
-      msg: "Booking confirmed and others cancelled",
+      msg: "Booking confirmed, post unpublished, and other bookings cancelled.",
       confirmedBooking,
     });
   } catch (e) {
-    console.error(e);
+    console.error("Booking confirm error:", e);
     return NextResponse.json(
       { status: "fail", msg: "Failed to confirm booking" },
       { status: 500 }

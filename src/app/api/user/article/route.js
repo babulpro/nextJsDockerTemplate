@@ -44,12 +44,12 @@ export async function POST(req){
 
 export async function GET(req, res) {
   try { 
-    const storeCookies = await cookies();
-    const token = storeCookies.get("token")?.value;
+    // const storeCookies = await cookies();
+    // const token = storeCookies.get("token")?.value;
 
-    if (!token) {
-      return NextResponse.json({ status: "fail", msg: "Something went wrong" });
-    }    
+    // if (!token) {
+    //   return NextResponse.json({ status: "fail", msg: "Something went wrong" });
+    // }    
 
     // ✅ Sort articles by createdAt DESC (latest first)
     const data = await prisma.post.findMany({

@@ -4,19 +4,25 @@ import Link from "next/link";
 
 export default function ArticlesPage() {
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [copiedId, setCopiedId] = useState(null);
+  const [searchCity, setSearchCity] = useState("");
+  const [sortOrder, setSortOrder] = useState("default");
+  const [propertyType, setPropertyType] = useState("all");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("/api/user/article", { cache: 'no-cache' });
+        const response = await fetch("/api/user/article", { cache: "no-cache" });
         if (!response.ok) throw new Error("Failed to fetch posts");
-        
-        const result = await response.json(); 
+
+        const result = await response.json();
         if (result.status === "success") {
-          setPosts(result.data);
+          const publishedPosts = result.data.filter((post) => post.published === true); 
+          setPosts(publishedPosts);
+          setFilteredPosts(publishedPosts);
         } else {
           throw new Error(result.msg || "Failed to load posts");
         }
@@ -28,38 +34,61 @@ export default function ArticlesPage() {
     };
 
     fetchPosts();
-  }, []);
+  }, [1]);
 
-  // const handleCopyLink = async (id) => {
-  //   const url = `${window.location.origin}/dashboard/pages/article/${id}`;
-  //   try {
-  //     await navigator.clipboard.writeText(url);
-  //     setCopiedId(id);
-  //     setTimeout(() => setCopiedId(null), 2000);
-  //   } catch (err) {
-  //     console.error("Failed to copy link:", err);
-  //   }
-  // };
+  // 🧭 Filter + Sort logic
+  useEffect(() => {
+    let filtered = [...posts];
 
-  const formatPrice = (price, currency) => {
-    return new Intl.NumberFormat('en-BD', {
-      style: 'currency',
-      currency: currency || 'BDT',
+    // Filter by city
+    if (searchCity.trim() !== "") {
+      filtered = filtered.filter((post) =>
+        post.city.toLowerCase().includes(searchCity.toLowerCase())
+      );
+    }
+
+    // Filter by property type (Room / Flat / Home)
+    if (propertyType !== "all") {
+      filtered = filtered.filter((post) =>
+        post.title?.toLowerCase().includes(propertyType.toLowerCase())
+      );
+    }
+
+    // Sort by price
+    if (sortOrder === "lowToHigh") {
+      filtered.sort((a, b) => a.rentPrice - b.rentPrice);
+    } else if (sortOrder === "highToLow") {
+      filtered.sort((a, b) => b.rentPrice - a.rentPrice);
+    }
+
+    setFilteredPosts(filtered);
+  }, [searchCity, sortOrder, propertyType, posts]);
+
+  const handleCopyLink = async (id) => {
+    const url = `${window.location.origin}/dashboard/pages/article/${id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
+  };
+
+  const formatPrice = (price, currency) =>
+    new Intl.NumberFormat("en-BD", {
+      style: "currency",
+      currency: currency || "BDT",
     }).format(price);
-  };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+  const formatDate = (dateString) =>
+    new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
-  };
 
-
-  console.log(posts);
-
-  if (loading) {
+   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
@@ -72,12 +101,11 @@ export default function ArticlesPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="text-center bg-white p-8 rounded-2xl shadow-lg">
-          <div className="text-red-500 text-4xl mb-4">❌</div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops!</h2>
           <p className="text-gray-600 mb-4">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
           >
@@ -89,38 +117,68 @@ export default function ArticlesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-300 to-white">
+    <div className="min-h-screen mt-10 bg-gradient-to-br from-slate-500 to-slate-800">
       {/* Header */}
       <div className="text-center py-12 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-          🏠 Available Properties
-        </h1>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+         
+        <p className="text-slate-300 text-2xl max-w-2xl mx-auto underline">
           Discover amazing rental properties and find your perfect home
         </p>
       </div>
 
-      {/* Properties Grid */}
+      {/* 🔍 Filters Section */}
+      <div className="container mx-auto px-4 pb-10 flex flex-wrap justify-center gap-4">
+        {/* City Search */}
+        <input
+          type="text"
+          placeholder="Search by city..."
+          value={searchCity}
+          onChange={(e) => setSearchCity(e.target.value)}
+          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-500"
+        />
+
+        {/* Sort by Price */}
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-500"
+        >
+          <option value="default">Sort by Price</option>
+          <option value="lowToHigh">Low to High</option>
+          <option value="highToLow">High to Low</option>
+        </select>
+
+        {/* Filter by Type */}
+        <select
+          value={propertyType}
+          onChange={(e) => setPropertyType(e.target.value)}
+          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-500"
+        >
+          <option value="all">All Types</option>
+          <option value="room">Room</option>
+          <option value="flat">Flat</option>
+          <option value="home">Home</option>
+        </select>
+      </div>
+
+      {/* Property Cards */}
       <div className="container mx-auto px-4 pb-16">
-        {posts.length === 0 ? (
+        {filteredPosts.length === 0 ? (
           <div className="text-center py-16">
-            <div className="text-6xl mb-4">🏠</div>
-            <h3 className="text-2xl font-semibold text-gray-700 mb-2">
-              No properties available
+            <h3 className="text-2xl font-semibold text-gray-200 mb-2">
+              No properties found
             </h3>
-            <p className="text-gray-500">
-              Be the first to list a property!
-            </p>
+            <p className="text-gray-400">Try changing your filters.</p>
           </div>
         ) : (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
+            {filteredPosts.map((post) => (
               <article
                 key={post.id}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group"
               >
-                {/* Images */}
-                {post.images && post.images.length > 0 && (
+                {/* Image */}
+                {post.images?.[0] && (
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={post.images[0]}
@@ -130,85 +188,45 @@ export default function ArticlesPage() {
                     <div className="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded-lg text-sm font-semibold">
                       {formatPrice(post.rentPrice, post.currency)}
                     </div>
-                    <div className="absolute inset-0 group-hover:bg-opacity-10 transition-opacity duration-300" />
                   </div>
                 )}
 
                 {/* Content */}
                 <div className="p-6">
-                  {/* Location & Date */}
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <p className="text-sm font-semibold text-gray-800">
                         {post.city}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {post.address}
-                      </p>
+                      <p className="text-xs text-gray-500">{post.address}</p>
                     </div>
                     <p className="text-xs text-gray-500">
                       {formatDate(post.createdAt)}
                     </p>
                   </div>
 
-                  {/* Title */}
                   <Link href={`/dashboard/pages/article/${post.id}`}>
                     <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 group-hover:text-indigo-600 transition-colors cursor-pointer">
                       {post.title || "Untitled Property"}
                     </h3>
                   </Link>
 
-                  {/* Description */}
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {post.description || "No description available"}
-                  </p>
-
-                  {/* Property Details */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
                       📞 {post.contactNumber || "N/A"}
                     </span>
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      post.published 
-                        ? "bg-green-100 text-green-800" 
-                        : "bg-gray-100 text-gray-800"
-                    }`}>
-                      {post.published ? "✅ Published" : "❌ Unpublished"}
-                    </span>
                     <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">
-                      Available: {formatDate(post.availableFrom)} - {formatDate(post.availableTo)}
+                      {formatDate(post.availableFrom)} -{" "}
+                      {formatDate(post.availableTo)}
                     </span>
                   </div>
 
-                  {/* Posted By */}
-                  {post.user && (
-                    <div className="flex items-center gap-2 mb-4 p-2 bg-gray-50 rounded-lg">
-                      <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                        <span className="text-indigo-600 text-sm font-semibold">
-                          {post.user.name?.charAt(0) || "U"}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-800">
-                          {post.user.name || "Unknown User"}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {post.user.phone || "No phone"}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Actions */}
                   <div className="flex items-center justify-between">
-                    <Link 
+                    <Link
                       href={`/dashboard/pages/article/${post.id}`}
                       className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center"
                     >
-                      View details
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      View details →
                     </Link>
 
                     <button
@@ -220,18 +238,7 @@ export default function ArticlesPage() {
                       }`}
                       title="Copy share link"
                     >
-                      {copiedId === post.id ? (
-                        <span className="flex items-center text-xs">
-                          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                          Copied!
-                        </span>
-                      ) : (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                      )}
+                      {copiedId === post.id ? "✔️" : "🔗"}
                     </button>
                   </div>
                 </div>
@@ -240,17 +247,6 @@ export default function ArticlesPage() {
           </div>
         )}
       </div>
-
-      {/* Floating Action Button */}
-      <Link
-        href="/dashboard/pages/article/create"
-        className="fixed bottom-8 right-8 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-110"
-        title="Create new property"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-        </svg>
-      </Link>
     </div>
   );
 }

@@ -17,8 +17,15 @@ export async function POST(req,res){
         }
 
         const payload = await DecodedJwtToken(token)
-        data.userId=payload.id
-        console.log(data)
+        data.userId=payload.id 
+
+        // const bookingData = await prisma.booking.findUnique({
+        //     where:{
+        //         postId:data.postId
+        //     }
+        // })
+
+        // if(postData.)
 
         const newRequest =await prisma.booking.create({
             data:{

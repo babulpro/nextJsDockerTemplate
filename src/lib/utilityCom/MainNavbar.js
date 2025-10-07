@@ -7,6 +7,7 @@ import Image from 'next/image'
 const MainNavbar = () => { 
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [role,setRole]=useState("")
 
   useEffect(() => {
     fetchUserData();
@@ -22,6 +23,7 @@ const MainNavbar = () => {
       
       const { data } = await response.json();
       setUserData(data || {});
+      setRole(data.roles[0])
     } catch (error) {
       console.error("Fetch error:", error);
       setUserData({});
@@ -51,17 +53,16 @@ const MainNavbar = () => {
 
   // Navigation items configuration
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/dashboard/pages/findHouse', label: 'Find House' },
-    { href: '/dashboard/pages/article', label: 'Rent Your House' },
-    { href: '/dashboard/pages/about', label: 'About' },
+    { href: '/', label: 'Home' }, 
+    { href: '/dashboard/pages/article', label: 'Post To Rent' },
+    { href: '/dashboard/pages/about', label: 'Why Here' },
     { href: '/dashboard/pages/support', label: 'Support' }
   ];
 
   // Admin-only items
   const adminItems = [
     { href: '/dashboard/pages/admin', label: 'Admin Panel' },
-    { href: '/dashboard/pages/statistics', label: 'Statistics' },
+    { href: '/dashboard/pages/admin/statistics', label: 'Statistics' },
   ];
 
   const renderNavItem = (item) => (
@@ -71,7 +72,7 @@ const MainNavbar = () => {
       </Link>
     </li>
   );
-
+ 
    
   return (
     <div className="navbar bg-base-100 shadow-sm fixed top-0 z-50">
@@ -103,20 +104,14 @@ const MainNavbar = () => {
             {navItems.map(renderNavItem)}
             
             {/* Admin items (if user is admin) */}
-            {userData.role === 'admin' && adminItems.map(renderNavItem)}
+            {role==="ADMIN" && adminItems.map(renderNavItem)}
           </ul>
         </div>
 
         {/* Logo */}
         <div className="w-12 h-12 hidden md:block">
-          <Link href="/">
-            <Image
-              src="/routine.png"
-              width={48}
-              height={48}
-              alt="App Logo"
-              className="object-contain"
-            />
+          <Link href="/" className="text-2xl">
+            🏠
           </Link>
         </div>
       </div>
@@ -127,7 +122,7 @@ const MainNavbar = () => {
           {navItems.map(renderNavItem)}
           
           {/* Admin items with visual distinction */}
-          {userData.role === 'admin' && 
+          {role === 'ADMIN' && 
             adminItems.map(item => (
               <li key={item.href}>
                 <Link 
