@@ -11,8 +11,9 @@ export default function BookingRequestsPage() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch("/api/user/userBookingList");
-        const result = await res.json();
+        const response = await fetch("/api/user/userBookingList",{cache: 'no-cache'});
+         if (!response.ok) throw new Error("Failed to fetch posts");
+        const result = await response.json();
        
 
         if (result.status === "success") {
