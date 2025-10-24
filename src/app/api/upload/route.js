@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Cloudinary will automatically use CLOUDINARY_URL from environment
+// No need to manually configure if using CLOUDINARY_URL
 
 export async function POST(request) {
   try {
+    console.log('=== UPLOAD STARTED ===');
+    console.log('Cloudinary URL present:', !!process.env.CLOUDINARY_URL);
+
     const formData = await request.formData();
     const file = formData.get('file');
     
@@ -11,45 +16,37 @@ export async function POST(request) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Generate unique filename
-    const timestamp = Date.now();
-    const originalName = file.name;
-    const extension = path.extname(originalName);
-    const filename = `image_${timestamp}${extension}`;
-
-    // Define upload path
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
-    const filepath = path.join(uploadDir, filename);
-
-    // Ensure directory exists (you might want to create it manually first)
-    try {
-      await writeFile(filepath, buffer);
-    } catch (err) {
-      if (err.code === 'ENOENT') {
-        // Directory doesn't exist - create it
-        const fs = require('fs');
-        await fs.promises.mkdir(uploadDir, { recursive: true });
-        await writeFile(filepath, buffer);
-      } else {
-        throw err;
-      }
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      return NextResponse.json({ error: 'Only image files are allowed' }, { status: 400 });
     }
 
-    // Return the public URL
-    const publicUrl = `/uploads/${filename}`;
+    // Convert file to base64 (more reliable)
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = buffer.toString('base64');
+    const dataURI = `data:${file.type};base64,${base64Image}`;
+
+    console.log('Uploading to Cloudinary...');
+
+    // Use upload method instead of upload_stream
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: 'houserent',
+      resource_type: 'image',
+      // Remove transformation parameters for now to simplify
+    });
+
+    console.log('Upload successful:', result.secure_url);
 
     return NextResponse.json({ 
       success: true, 
-      url: publicUrl 
+      url: result.secure_url
     });
 
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('UPLOAD ERROR:', error);
     return NextResponse.json(
-      { error: 'Failed to upload file' }, 
+      { error: 'Upload failed: ' + error.message }, 
       { status: 500 }
     );
   }
