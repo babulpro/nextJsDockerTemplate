@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Remove standalone output for Vercel deployment
-  // output: 'standalone', // Only use this for Docker
+   output: 'standalone', // Only use this for Docker
   
   // Compress images
   images: {
@@ -11,6 +11,7 @@ const nextConfig = {
   
   // Enable experimental features if needed
   experimental: {
+    appDir: true,
     // Add any experimental features here
   },
   
