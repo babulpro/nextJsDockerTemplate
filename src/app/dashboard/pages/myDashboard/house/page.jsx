@@ -198,15 +198,28 @@ export default function Page() {
 
                   {/* Actions */}
                   <div className="flex items-center justify-between">
-                    <Link 
-                      href={`/dashboard/pages/myDashboard/house/${post.id}`}
+                    <div>
+                        <Link 
+                        href={`/dashboard/pages/myDashboard/house/${post.id}`}
+                        className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center"
+                      >
+                        View All Request
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    </div>
+                    <div>
+                        <Link 
+                      href={`/dashboard/pages/myDashboard/house/edit/${post.id}`}
                       className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center"
                     >
-                      View All Request
+                      EDIT POST
                       <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </Link>
+                    </div>
 
                       
                   </div>

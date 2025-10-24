@@ -16,7 +16,7 @@ import { jwtVerify, SignJWT } from "jose"
 
 
 export async function DecodedJwtToken(token) {
-    const
+    const secret = process.env.MYSECRET;
     const Secret= new TextEncoder().encode(secret)
     const decodedToken = await jwtVerify(token,Secret)
     return decodedToken['payload']   
