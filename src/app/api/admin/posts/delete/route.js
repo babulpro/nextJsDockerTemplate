@@ -1,25 +1,10 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { DecodedJwtToken } from "@/lib/authFunction/JwtHelper";
-import { cookies } from "next/headers"
-
 
 export const dynamic = "force-dynamic";
 
 export async function DELETE(req) {
   try {
-    const storeCookies = await cookies()
-        const token = storeCookies.get("token")?.value;
-    
-    
-        const payload = await DecodedJwtToken(token)
-    
-    
-    
-        if(!token){
-          return  NextResponse.json({status:"fail",msg:"unauthorize"},{status:500})
-        }
-
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
