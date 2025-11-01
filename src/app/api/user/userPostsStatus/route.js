@@ -57,6 +57,8 @@ export async function GET(req) {
           city: post.city,
           address: post.address,
           images: post.images,
+          availableFrom: post.availableFrom,  
+          availableTo: post.availableTo
         },
         bookings: formattedBookings,
       },

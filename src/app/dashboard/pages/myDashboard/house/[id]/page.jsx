@@ -15,7 +15,7 @@ export default function BookingRequestsPage() {
     const fetchBookings = async () => {
       try {
         const res = await fetch(`/api/user/userPostsStatus?id=${id}`);
-        const result = await res.json();
+        const result = await res.json(); 
         if (result.status === "success") {
           setPost(result.data.post);
           setBookings(result.data.bookings);
@@ -138,7 +138,7 @@ export default function BookingRequestsPage() {
 
         {/* Booking Requests */}
         <div className="bg-white p-6 rounded-2xl shadow-md">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 underline">
             Booking Requests
           </h2>
 

@@ -159,35 +159,36 @@ export default function Page() {
       <div className="mt-10 underline md:text-3xl text-slate-200 flex items-center bg-slate-700 justify-center">
         <h1 className="mt-5"> Describe The Details Of Your Rents</h1>
       </div>
-      <div className="bg-slate-700 min-h-screen flex justify-center items-center">
+      <div className="bg-slate-700 min-h-screen flex justify-center items-center md:p-4 p-2 shadow-2xl">
         <div className="md:w-3/5 w-4/5 shadow-xl md:py-10 py-4 px-2">
           <form onSubmit={FormSubmitHandler}>
             {/* Keep all your existing form fields as they are */}
             <label htmlFor="title">Type Of Your Rents</label><br />
-            <input type="text" value={data.title} onChange={(e) => InputChange("title", e.target.value)} className="inputClass text-left w-full" id="title" placeholder="Home,House,Flat,Room" /> <br /><br />
+            <input type="text" value={data.title} onChange={(e) => InputChange("title", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="title" placeholder="Home,House,Flat,Room" /> <br /><br />
 
             <label htmlFor="description">Rents Description</label><br />
-            <textarea value={data.description} onChange={(e) => InputChange("description", e.target.value)} className="inputClass text-left w-full" id="description" rows="3" placeholder="this is awesome 3000 sqr fit flat with 2 bed room,dinnig,kitchen,two bath...." /> <br /><br />
+            <textarea value={data.description} onChange={(e) => InputChange("description", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="description" rows="3" placeholder="this is awesome 3000 sqr fit flat with 2 bed room,dinnig,kitchen,two bath...." /> <br /><br />
 
             <label htmlFor="city">City</label><br />
-            <input type="text" value={data.city} onChange={(e) => InputChange("city", e.target.value)} className="inputClass text-left w-full" id="city" placeholder="Dhaka" /> <br /><br />
+            <input type="text" value={data.city} onChange={(e) => InputChange("city", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="city" placeholder="Dhaka" /> <br /><br />
 
             <label htmlFor="address">Address</label><br />
-            <input type="text" value={data.address} onChange={(e) => InputChange("address", e.target.value)} className="inputClass text-left w-full" id="address" placeholder="Vill:Raki para, P.O:Nambir dala ,P.S:Damsona, Dis:Dhaka"/> <br /><br />
+            <input type="text" value={data.address} onChange={(e) => InputChange("address", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="address" placeholder="Vill:Raki para, P.O:Nambir dala ,P.S:Damsona, Dis:Dhaka"/> <br /><br />
 
             <label htmlFor="contactNumber">Contact Number</label><br />
-            <input type="text" value={data.contactNumber} onChange={(e) => InputChange("contactNumber", e.target.value)} className="inputClass text-left w-full" id="contactNumber" placeholder="+8801920987588"/> <br /><br />
+            <input type="text" value={data.contactNumber} onChange={(e) => InputChange("contactNumber", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="contactNumber" placeholder="+8801920987588"/> <br /><br />
 
             <label htmlFor="rentPrice">Rent Price ({data.currency})</label><br />
-            <input type="number" value={data.rentPrice} onChange={(e) => InputChange("rentPrice", e.target.value)} className="inputClass w-full" id="rentPrice" placeholder="12400" /> <br /><br />
+            <input type="number" value={data.rentPrice} onChange={(e) => InputChange("rentPrice", e.target.value)} className="inputClass w-full px-2 py-1 bg-slate-500 rounded-xl" id="rentPrice" placeholder="12400" /> <br /><br />
 
             <label>Available From</label><br />
-            <input type="date" value={data.availableFrom} onChange={(e) => InputChange("availableFrom", e.target.value)} className="inputClass text-left w-full" /> <br /><br />
+            <input type="date" value={data.availableFrom} onChange={(e) => InputChange("availableFrom", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" /> <br /><br />
 
             <label>Available To</label><br />
-            <input type="date" value={data.availableTo} onChange={(e) => InputChange("availableTo", e.target.value)} className="inputClass text-left w-full" /> <br /><br />
+            <input type="date" value={data.availableTo} onChange={(e) => InputChange("availableTo", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" /> <br /><br />
 
             {/* Updated Images Section */}
+             
             <h3 className="mt-4 mb-2">Upload Images (at least 4–5 images)</h3>
             {imageFiles.map((file, idx) => (
               <div key={idx} className="mb-2">
@@ -195,7 +196,7 @@ export default function Page() {
                   type="file"
                   accept="image/*"
                   onChange={(e) => handleFileChange(idx, e.target.files[0])}
-                  className="inputClass w-full text-slate-800"
+                  className="inputClass  px-2 py-1 rounded-xl bg-slate-500 text-slate-300"
                 />
                 {file && (
                   <p className="text-sm text-green-400 mt-1">
