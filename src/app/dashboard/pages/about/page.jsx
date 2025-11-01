@@ -17,8 +17,8 @@ export default function Page(){
                 <div className=" md:container m-auto shadow-xl md:p-10  p-2">
                   <div>
                         <Hero/>
-                  </div>
                   <Home/>
+                  </div>
     
                 </div>
             </div>

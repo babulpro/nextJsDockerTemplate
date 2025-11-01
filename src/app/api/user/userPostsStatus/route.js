@@ -119,3 +119,52 @@ export async function PATCH(req) {
     );
   }
 }
+
+
+ export async function DELETE(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const postId = searchParams.get("id");
+    
+    if (!postId) {
+      return NextResponse.json(
+        { status: "fail", msg: "Post ID is required" }, 
+        { status: 400 }
+      );
+    }
+
+    // Simple delete - Prisma cascade should handle related records
+    const deletedPost = await prisma.post.delete({
+      where: { id: postId }
+    });
+
+    return NextResponse.json({
+      status: "success",
+      msg: "Post deleted successfully",
+      data: {
+        deletedPost: {
+          id: deletedPost.id,
+          title: deletedPost.title
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error("Delete post error:", error);
+    
+    if (error.code === 'P2025') {
+      return NextResponse.json(
+        { status: "fail", msg: "Post not found" },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json(
+      { status: "fail", msg: "Error deleting post" },
+      { status: 500 }
+    );
+  }
+}
+  
+   
+ 

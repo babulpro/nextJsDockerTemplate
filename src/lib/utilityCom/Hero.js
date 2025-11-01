@@ -40,7 +40,7 @@ export default function Hero() {
               <div className="mt-4 font-bold text-green-900 capitalize lg:mt-8 lg:mr-8">
                 <Link
                   className="w-28 px-3 py-1 bg-green-200 rounded-lg lg:w-44 hover:bg-transparent hover:text-white hover:border"
-                  href="/properties"
+                  href="/"
                 >
                   Browse Homes →
                 </Link>

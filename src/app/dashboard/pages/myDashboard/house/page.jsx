@@ -209,6 +209,9 @@ export default function Page() {
                         </svg>
                       </Link>
                     </div>
+
+
+
                     <div>
                         <Link 
                       href={`/dashboard/pages/myDashboard/house/edit/${post.id}`}
@@ -222,6 +225,21 @@ export default function Page() {
                     </div>
 
                       
+                  </div>
+                  <div className="flex items-center justify-between w-full mt-5">
+
+                    
+
+                    <div >
+                       <div className="px-2 py-1 bg-red-300 hover:bg-red-800 w-full rounded-lg">
+                            <Link 
+                            href={`/dashboard/pages/myDashboard/house/delete/${post.id}`}
+                            className="text-indigo-600 hover:text-indigo-700 font-medium text-sm flex items-center"
+                          >
+                            DELETE POST
+                          </Link>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </article>

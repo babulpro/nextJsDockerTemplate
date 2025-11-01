@@ -213,25 +213,25 @@ export default function EditPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-200 to-blue-500 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-500 to-slate-700 py-8">
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">
+          <h1 className="text-4xl font-bold text-gray-800 mb-3 underline">
             Edit Your Rental Post
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-lg text-slate-100">
             Update your property details and attract more tenants
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-slate-400 rounded-2xl shadow-xl p-6 md:p-8">
+        <div className="bg-slate-900 rounded-2xl shadow-xl text-slate-100 p-6 md:p-8">
           <form onSubmit={FormSubmitHandler} className="space-y-6">
             {/* Basic Information Section */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-200 mb-2">
                   Property Type *
                 </label>
                 <input
@@ -245,7 +245,7 @@ export default function EditPostPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-200 mb-2">
                   Rent Price ({data.currency}) *
                 </label>
                 <input
@@ -262,7 +262,7 @@ export default function EditPostPage() {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-100 mb-2">
                 Property Description *
               </label>
               <textarea
@@ -278,7 +278,7 @@ export default function EditPostPage() {
             {/* Location Section */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-200 mb-2">
                   City *
                 </label>
                 <input
@@ -292,7 +292,7 @@ export default function EditPostPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-200 mb-2">
                   Contact Number *
                 </label>
                 <input
@@ -307,7 +307,7 @@ export default function EditPostPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-200 mb-2">
                 Full Address *
               </label>
               <input
@@ -323,7 +323,7 @@ export default function EditPostPage() {
             {/* Availability Section */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-200 mb-2">
                   Available From *
                 </label>
                 <input
@@ -336,7 +336,7 @@ export default function EditPostPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-200 mb-2">
                   Available To *
                 </label>
                 <input
@@ -352,7 +352,7 @@ export default function EditPostPage() {
             {/* Images Section */}
             <div>
               <div className="flex justify-between items-center mb-4">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-200">
                   Property Images
                 </label>
                 <button
@@ -392,12 +392,12 @@ export default function EditPostPage() {
             </div>
 
             {/* Publish Toggle */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-slate-500 rounded-lg">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-200">
                   Publish Status
                 </label>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-slate-200">
                   {data.published ? "Your post is visible to everyone" : "Your post is hidden"}
                 </p>
               </div>
@@ -446,7 +446,7 @@ export default function EditPostPage() {
 
         {/* Preview Note */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-slate-100">
             💡 Tip: Make sure all information is accurate to attract genuine tenants
           </p>
         </div>

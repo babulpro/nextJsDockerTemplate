@@ -76,12 +76,12 @@ export default function Home() {
 
           {/* CTA */}
           <div className="flex flex-wrap items-center gap-3 mt-10">
-            <Link
+            {/* <Link
               className="btn bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-5 py-2"
               href={"/dashboard/pages/property/addProperty"}
             >
               List Your Property Now
-            </Link>
+            </Link> */}
             <span className="text-slate-200/80 text-sm">
               It takes 2 minutes to start renting.
             </span>
@@ -166,7 +166,7 @@ export default function Home() {
         {/* CTA Section */}
         <div className="flex flex-col items-center mt-12">
           <Link
-            href={"/dashboard/pages/property"}
+            href={"/"}
             className="btn bg-green-600 hover:bg-green-700 text-white rounded-lg px-6 py-3 text-lg shadow-lg transition"
           >
             Explore Properties Now
@@ -210,7 +210,7 @@ export default function Home() {
               <div className="mt-4 font-bold text-green-900 capitalize lg:mt-8 lg:mr-8">
                 <Link
                   className="w-20 px-3 py-1 bg-green-200 rounded-lg lg:w-40 hover:bg-transparent hover:text-white hover:border"
-                  href="/dashboard/pages/property/addProperty"
+                  href="/"
                 >
                   Get Started Today →
                 </Link>
@@ -298,7 +298,7 @@ export default function Home() {
         {/* CTA Section */}
         <div className="flex flex-col items-center mt-12">
           <Link
-            href={"/dashboard/pages/booking"}
+            href={"/"}
             className="btn bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-6 py-3 text-lg shadow-lg transition"
           >
             Start Booking Now
@@ -369,7 +369,7 @@ export default function Home() {
         {/* CTA */}
         <div className="flex flex-col items-center">
           <Link
-            href={"/dashboard/pages/property"}
+            href={"/"}
             className="btn bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 text-lg shadow-lg transition"
           >
             Start Exploring Homes

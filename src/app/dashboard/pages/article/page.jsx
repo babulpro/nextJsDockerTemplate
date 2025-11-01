@@ -164,10 +164,10 @@ export default function Page() {
           <form onSubmit={FormSubmitHandler}>
             {/* Keep all your existing form fields as they are */}
             <label htmlFor="title">Type Of Your Rents</label><br />
-            <input type="text" value={data.title} onChange={(e) => InputChange("title", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="title" placeholder="Home,House,Flat,Room" /> <br /><br />
+            <input type="text" value={data.title} onChange={(e) => InputChange("title", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="title" placeholder="Home,Flat,Room" /> <br /><br />
 
             <label htmlFor="description">Rents Description</label><br />
-            <textarea value={data.description} onChange={(e) => InputChange("description", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="description" rows="3" placeholder="this is awesome 3000 sqr fit flat with 2 bed room,dinnig,kitchen,two bath...." /> <br /><br />
+            <textarea value={data.description} onChange={(e) => InputChange("description", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="description" rows="3" placeholder="this is awesome 3000 sqr fit flat with 2 bed room,dining,kitchen,two bath...." /> <br /><br />
 
             <label htmlFor="city">City</label><br />
             <input type="text" value={data.city} onChange={(e) => InputChange("city", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="city" placeholder="Dhaka" /> <br /><br />
