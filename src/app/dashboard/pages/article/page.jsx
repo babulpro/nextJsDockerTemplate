@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
@@ -17,50 +17,30 @@ export default function Page() {
     published: true,
     availableFrom: "",
     availableTo: "",
-    images: [], // Now this will store file objects or uploaded URLs
+    images: [],
   });
 
-  const [imageFiles, setImageFiles] = useState(Array(5).fill(null)); // Store file objects
+  const [imageFiles, setImageFiles] = useState(Array(5).fill(null));
 
   const InputChange = (name, value) => {
     setData((pre) => ({ ...pre, [name]: value }));
   };
 
-  // Handle file input change
   const handleFileChange = (index, file) => {
     const updatedFiles = [...imageFiles];
     updatedFiles[index] = file;
     setImageFiles(updatedFiles);
   };
 
-  // Upload images to your API
+  // Mock image upload function (frontend only)
   const uploadImages = async (files) => {
-    const uploadedUrls = [];
+    // Simulate upload delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    for (const file of files) {
-      if (!file) continue;
-      
-      const formData = new FormData();
-      formData.append("file", file);
-      
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          uploadedUrls.push(result.url); // Assuming your API returns { url: "image-url" }
-        } else {
-          console.error("Upload failed for file:", file.name);
-        }
-      } catch (error) {
-        console.error("Error uploading file:", error);
-      }
-    }
-    
-    return uploadedUrls;
+    // Return mock URLs for demo
+    return files.filter(file => file !== null).map((file, index) => 
+      `https://picsum.photos/600/400?random=${index + Date.now()}`
+    );
   };
 
   const FormSubmitHandler = async (e) => {
@@ -112,27 +92,12 @@ export default function Page() {
         images: imageUrls,
       };
 
-      const response = await fetch("/api/user/article", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      // Simulate API call success
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      alert("🎉 Congratulations — rent post created successfully!");
+      router.push("/");
 
-      if (!response.ok) {
-        const text = await response.text();
-        console.error("server error:", text);
-        alert("Try again");
-        setUploading(false);
-        return;
-      }
-
-      const json = await response.json();
-      if (json.status === "success") {
-        alert("Congratulations — rent post created!");
-        router.push("/");
-      } else {
-        alert("Failed to create rent post.");
-      }
     } catch (err) {
       console.error(err);
       alert("Try again later");
@@ -141,7 +106,6 @@ export default function Page() {
     }
   };
 
-  // Helper functions (keep your existing ones)
   const toUtcStartOfDay = (yyyyMmDd) => {
     if (!yyyyMmDd) return null;
     const [y, m, d] = yyyyMmDd.split("-").map(Number);
@@ -155,71 +119,218 @@ export default function Page() {
   };
 
   return (
-    <div>
-      <div className="mt-10 underline md:text-3xl text-slate-200 flex items-center bg-slate-700 justify-center">
-        <h1 className="mt-5"> Describe The Details Of Your Rents</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Header */}
+      <div className="pt-20 pb-8 px-4 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-4">
+          🏠 List Your Property
+        </h1>
+        <p className="text-emerald-100/70 text-lg max-w-2xl mx-auto">
+          Fill in the details below to create your rental listing and reach potential tenants
+        </p>
       </div>
-      <div className="bg-slate-700 min-h-screen flex justify-center items-center md:p-4 p-2 shadow-2xl">
-        <div className="md:w-3/5 w-4/5 shadow-xl md:py-10 py-4 px-2">
-          <form onSubmit={FormSubmitHandler}>
-            {/* Keep all your existing form fields as they are */}
-            <label htmlFor="title">Type Of Your Rents</label><br />
-            <input type="text" value={data.title} onChange={(e) => InputChange("title", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="title" placeholder="Home,Flat,Room" /> <br /><br />
 
-            <label htmlFor="description">Rents Description</label><br />
-            <textarea value={data.description} onChange={(e) => InputChange("description", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="description" rows="3" placeholder="this is awesome 3000 sqr fit flat with 2 bed room,dining,kitchen,two bath...." /> <br /><br />
-
-            <label htmlFor="city">City</label><br />
-            <input type="text" value={data.city} onChange={(e) => InputChange("city", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="city" placeholder="Dhaka" /> <br /><br />
-
-            <label htmlFor="address">Address</label><br />
-            <input type="text" value={data.address} onChange={(e) => InputChange("address", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="address" placeholder="Vill:Raki para, P.O:Nambir dala ,P.S:Damsona, Dis:Dhaka"/> <br /><br />
-
-            <label htmlFor="contactNumber">Contact Number</label><br />
-            <input type="text" value={data.contactNumber} onChange={(e) => InputChange("contactNumber", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" id="contactNumber" placeholder="+8801920987588"/> <br /><br />
-
-            <label htmlFor="rentPrice">Rent Price ({data.currency})</label><br />
-            <input type="number" value={data.rentPrice} onChange={(e) => InputChange("rentPrice", e.target.value)} className="inputClass w-full px-2 py-1 bg-slate-500 rounded-xl" id="rentPrice" placeholder="12400" /> <br /><br />
-
-            <label>Available From</label><br />
-            <input type="date" value={data.availableFrom} onChange={(e) => InputChange("availableFrom", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" /> <br /><br />
-
-            <label>Available To</label><br />
-            <input type="date" value={data.availableTo} onChange={(e) => InputChange("availableTo", e.target.value)} className="inputClass text-left w-full px-2 py-1 bg-slate-500 rounded-xl" /> <br /><br />
-
-            {/* Updated Images Section */}
-             
-            <h3 className="mt-4 mb-2">Upload Images (at least 4–5 images)</h3>
-            {imageFiles.map((file, idx) => (
-              <div key={idx} className="mb-2">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleFileChange(idx, e.target.files[0])}
-                  className="inputClass  px-2 py-1 rounded-xl bg-slate-500 text-slate-300"
+      {/* Form Container */}
+      <div className="flex justify-center items-center px-4 pb-16">
+        <div className="w-full max-w-4xl">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-3xl border border-white/20 shadow-2xl p-6 md:p-8">
+            <form onSubmit={FormSubmitHandler} className="space-y-6">
+              {/* Property Type */}
+              <div className="space-y-2">
+                <label htmlFor="title" className="text-emerald-100/80 font-medium text-sm">
+                  🏡 Property Type
+                </label>
+                <input 
+                  type="text" 
+                  value={data.title} 
+                  onChange={(e) => InputChange("title", e.target.value)} 
+                  className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                  id="title" 
+                  placeholder="Home, Flat, Room, Apartment..." 
+                  required
                 />
-                {file && (
-                  <p className="text-sm text-green-400 mt-1">
-                    Selected: {file.name}
-                  </p>
-                )}
               </div>
-            ))}
 
-            <div className="mt-8">
-              <button 
-                type="submit" 
-                disabled={uploading}
-                className={`p-2 rounded cursor-pointer ${
-                  uploading 
-                    ? 'bg-slate-500 cursor-not-allowed' 
-                    : 'bg-slate-800 hover:bg-slate-600'
-                }`}
-              >
-                {uploading ? 'Uploading...' : 'Post Rent'}
-              </button>
-            </div>
-          </form>
+              {/* Description */}
+              <div className="space-y-2">
+                <label htmlFor="description" className="text-emerald-100/80 font-medium text-sm">
+                  📝 Property Description
+                </label>
+                <textarea 
+                  value={data.description} 
+                  onChange={(e) => InputChange("description", e.target.value)} 
+                  className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300 resize-none"
+                  id="description" 
+                  rows="4" 
+                  placeholder="Describe your property... (e.g., This is a beautiful 3000 sq ft flat with 2 bedrooms, dining area, kitchen, two bathrooms...)"
+                  required
+                />
+              </div>
+
+              {/* Location Details */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="city" className="text-emerald-100/80 font-medium text-sm">
+                    🌆 City
+                  </label>
+                  <input 
+                    type="text" 
+                    value={data.city} 
+                    onChange={(e) => InputChange("city", e.target.value)} 
+                    className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                    id="city" 
+                    placeholder="Dhaka, Chattogram, Sylhet..." 
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="contactNumber" className="text-emerald-100/80 font-medium text-sm">
+                    📞 Contact Number
+                  </label>
+                  <input 
+                    type="text" 
+                    value={data.contactNumber} 
+                    onChange={(e) => InputChange("contactNumber", e.target.value)} 
+                    className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                    id="contactNumber" 
+                    placeholder="+8801920987588" 
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="space-y-2">
+                <label htmlFor="address" className="text-emerald-100/80 font-medium text-sm">
+                  📍 Full Address
+                </label>
+                <input 
+                  type="text" 
+                  value={data.address} 
+                  onChange={(e) => InputChange("address", e.target.value)} 
+                  className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                  id="address" 
+                  placeholder="Vill: Raki para, P.O: Nambir dala, P.S: Damsona, Dis: Dhaka" 
+                  required
+                />
+              </div>
+
+              {/* Price & Availability */}
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="rentPrice" className="text-emerald-100/80 font-medium text-sm">
+                    💰 Rent Price ({data.currency})
+                  </label>
+                  <input 
+                    type="number" 
+                    value={data.rentPrice} 
+                    onChange={(e) => InputChange("rentPrice", e.target.value)} 
+                    className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                    id="rentPrice" 
+                    placeholder="12400" 
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-emerald-100/80 font-medium text-sm">
+                    📅 Available From
+                  </label>
+                  <input 
+                    type="date" 
+                    value={data.availableFrom} 
+                    onChange={(e) => InputChange("availableFrom", e.target.value)} 
+                    className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-emerald-100/80 font-medium text-sm">
+                    📅 Available To
+                  </label>
+                  <input 
+                    type="date" 
+                    value={data.availableTo} 
+                    onChange={(e) => InputChange("availableTo", e.target.value)} 
+                    className="w-full px-4 py-4 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-300"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Image Upload Section */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <label className="text-emerald-100/80 font-medium text-sm">
+                    📸 Property Images (Upload 4-5 images)
+                  </label>
+                  <span className="text-emerald-400/70 text-xs">
+                    {imageFiles.filter(file => file !== null).length}/5 selected
+                  </span>
+                </div>
+                
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {imageFiles.map((file, idx) => (
+                    <div key={idx} className="space-y-2">
+                      <div className="relative">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileChange(idx, e.target.files[0])}
+                          className="w-full px-3 py-3 bg-white/10 backdrop-blur-sm border border-emerald-400/30 rounded-xl text-emerald-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-500/20 file:text-emerald-300 hover:file:bg-emerald-500/30 transition-all duration-300"
+                        />
+                      </div>
+                      {file && (
+                        <p className="text-green-400 text-xs truncate">
+                          ✅ {file.name}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="bg-emerald-500/10 border border-emerald-400/20 rounded-xl p-3">
+                  <p className="text-emerald-200/80 text-xs text-center">
+                    💡 Upload clear, high-quality images of different areas (living room, bedroom, kitchen, bathroom, exterior)
+                  </p>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="pt-6 border-t border-white/10">
+                <button 
+                  type="submit" 
+                  disabled={uploading}
+                  className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-2xl flex items-center justify-center space-x-2 group ${
+                    uploading 
+                      ? 'bg-gray-500/50 text-gray-300 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 hover:shadow-2xl'
+                  }`}
+                >
+                  {uploading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                      <span>Creating Listing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🚀 Post Your Property</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Help Text */}
+              <div className="text-center">
+                <p className="text-emerald-100/50 text-sm">
+                  Your property will be visible to potential tenants after approval
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

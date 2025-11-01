@@ -3,28 +3,98 @@ import React, { useState, useEffect } from "react";
 
 export default function AdminPostsPage() {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Mock data for demonstration
+  const mockPosts = [
+    {
+      id: 1,
+      title: "Luxury Apartment in Gulshan",
+      city: "Dhaka",
+      rentPrice: 45000,
+      currency: "BDT",
+      published: true,
+      availableFrom: "2024-01-15",
+      availableTo: "2024-12-31",
+      bookings: [
+        { status: "CONFIRMED" },
+        { status: "PENDING" },
+        { status: "CONFIRMED" },
+        { status: "CANCELLED" }
+      ],
+      user: { name: "John Doe" }
+    },
+    {
+      id: 2,
+      title: "Cozy Room in Banani",
+      city: "Dhaka",
+      rentPrice: 15000,
+      currency: "BDT",
+      published: false,
+      availableFrom: "2024-02-01",
+      availableTo: "2024-06-30",
+      bookings: [
+        { status: "PENDING" },
+        { status: "PENDING" }
+      ],
+      user: { name: "Sarah Smith" }
+    },
+    {
+      id: 3,
+      title: "Modern Flat in Uttara",
+      city: "Dhaka",
+      rentPrice: 35000,
+      currency: "BDT",
+      published: true,
+      availableFrom: "2024-01-20",
+      availableTo: "2024-11-30",
+      bookings: [
+        { status: "CONFIRMED" },
+        { status: "CONFIRMED" },
+        { status: "CONFIRMED" },
+        { status: "PENDING" },
+        { status: "CANCELLED" }
+      ],
+      user: { name: "Mike Johnson" }
+    },
+    {
+      id: 4,
+      title: "Family Home in Dhanmondi",
+      city: "Dhaka",
+      rentPrice: 60000,
+      currency: "BDT",
+      published: true,
+      availableFrom: "2024-03-01",
+      availableTo: "2024-12-31",
+      bookings: [
+        { status: "PENDING" }
+      ],
+      user: { name: "Emma Wilson" }
+    },
+    {
+      id: 5,
+      title: "Studio Apartment in Mirpur",
+      city: "Dhaka",
+      rentPrice: 12000,
+      currency: "BDT",
+      published: false,
+      availableFrom: "2024-02-15",
+      availableTo: "2024-08-31",
+      bookings: [],
+      user: { name: "David Brown" }
+    }
+  ];
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch("/api/admin/posts/allposts", { cache: "no-store" });
-        const result = await res.json();
+    // Simulate API call with mock data
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setPosts(mockPosts);
+      setLoading(false);
+    }, 1000);
 
-        if (result.status === "success") {
-          setPosts(result.data);
-        } else {
-          setError(result.msg || "Failed to load posts");
-        }
-      } catch (err) {
-        setError(err.message || "Error fetching posts");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
+    return () => clearTimeout(timer);
   }, []);
 
   // ✅ Format date nicely
@@ -42,45 +112,17 @@ export default function AdminPostsPage() {
 
   // ✅ Toggle publish status
   const handleTogglePublish = async (id, currentStatus) => {
-    try {
-      const res = await fetch(`/api/admin/posts/approve`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, published: !currentStatus }),
-      });
-
-      const result = await res.json();
-      if (result.status === "success") {
-        setPosts((prev) =>
-          prev.map((p) =>
-            p.id === id ? { ...p, published: !currentStatus } : p
-          )
-        );
-      } else {
-        alert(result.msg || "Failed to update publish status");
-      }
-    } catch (err) {
-      alert("Error updating publish status");
-    }
+    setPosts((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, published: !currentStatus } : p
+      )
+    );
   };
 
   // ✅ Delete post
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
-
-    try {
-      const res = await fetch(`/api/admin/posts/delete?id=${id}`, {
-        method: "DELETE",
-      });
-      const result = await res.json();
-      if (result.status === "success") {
-        setPosts((prev) => prev.filter((p) => p.id !== id));
-      } else {
-        alert(result.msg || "Failed to delete post");
-      }
-    } catch (err) {
-      alert("Error deleting post");
-    }
+    setPosts((prev) => prev.filter((p) => p.id !== id));
   };
 
   // ✅ Count booking status
@@ -125,7 +167,7 @@ export default function AdminPostsPage() {
             🛠 Admin Post Management
           </h1>
           <p className="text-emerald-100/70 text-lg">
-            Manage and monitor all property listings
+            Manage and monitor all property listings (Demo Data)
           </p>
         </div>
       </div>
@@ -150,7 +192,7 @@ export default function AdminPostsPage() {
                   Property Listings ({posts.length})
                 </h2>
                 <div className="text-emerald-100/70 text-sm">
-                  Last updated: {new Date().toLocaleDateString()}
+                  Demo Data • Last updated: {new Date().toLocaleDateString()}
                 </div>
               </div>
             </div>
@@ -271,13 +313,22 @@ export default function AdminPostsPage() {
             {/* Table Footer */}
             <div className="bg-white/5 border-t border-white/10 p-4">
               <div className="flex justify-between items-center text-emerald-100/60 text-sm">
-                <div>Showing {posts.length} properties</div>
-                <div>HouseRent Admin Panel</div>
+                <div>Showing {posts.length} demo properties</div>
+                <div>HouseRent Admin Panel • Frontend Demo</div>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Demo Notice */}
+      <div className="max-w-7xl mx-auto mt-6">
+        <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-lg rounded-2xl border border-blue-400/30 p-4 text-center">
+          <p className="text-blue-200 text-sm">
+            💡 This is a frontend demo with mock data. Connect to your backend API when ready.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

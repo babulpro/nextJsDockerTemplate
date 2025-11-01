@@ -1,113 +1,177 @@
- 'use client'
- import React, { useState } from 'react';
- import Link from 'next/link'
-import toast from 'react-hot-toast';
- 
- const Footer = () => {
-    const initValue={email:""}
-    
-    
-    const [data,setData]=useState({...initValue})
-    
-    
+'use client'
+import React from 'react';
+import Link from 'next/link'
 
-    const InputChange =(name,value)=>{
-        setData(pre=>({
-            ...pre,
-            [name]:value
-        }))
-    }
-
-    
-    const FormSubmitHandler = async (e) => {
-        e.preventDefault();   
-         
-            try {
-                const config = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                };
-    
-                const response = await fetch("/api/getData/subscriber", config, { cache: "no-cache" });
-    
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-    
-                const json = await response.json();
-    
-                if (json.status === "ok") {
-                    toast.success('Thank You for NewsLetter!')
-                    setData(initValue)
-                     
-                }
-                else{
-                    toast.error("Already Registered")
-                }
-            } catch (error) {
-                toast.error("Already Registered")
-            }
-        }
-    
-    
-
+const Footer = () => {
     return (
-         <div className="w-full bg-base-100   ">
-            <div className="lg:w-4/5 m-auto py-10 shadow-2xl px-5">
-                <div className=" lg:flex lg:justify-between">
+        <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 border-t border-white/10 py-12">
+            <div className="max-w-7xl mx-auto px-4">
+                <div className="grid md:grid-cols-4 gap-8 mb-8">
+                    {/* Brand Section */}
+                    <div className="md:col-span-1">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                                🏠
+                            </div>
+                            <h4 className="font-bold text-2xl bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                                HouseRent
+                            </h4>
+                        </div>
+                        <p className="text-emerald-100/80 text-sm leading-relaxed">
+                            Making renting and hosting simple, secure, and delightful for everyone. 
+                            Find your perfect home today.
+                        </p>
+                        <div className="flex space-x-3 mt-4">
+                            <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400 border border-emerald-400/30 cursor-pointer hover:bg-emerald-500/30 transition-all">
+                                📘
+                            </div>
+                            <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400 border border-emerald-400/30 cursor-pointer hover:bg-emerald-500/30 transition-all">
+                                📷
+                            </div>
+                            <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400 border border-emerald-400/30 cursor-pointer hover:bg-emerald-500/30 transition-all">
+                                🐦
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Quick Links */}
+                    <div>
+                        <h4 className="font-semibold text-lg text-white mb-4 flex items-center">
+                            <span className="w-2 h-2 bg-emerald-400 rounded-full mr-2"></span>
+                            Quick Links
+                        </h4>
+                        <ul className="space-y-3">
+                            <li>
+                                <Link href="/about" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    About Us
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/contact" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Contact
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/privacy" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Privacy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/terms" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Terms
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    {/* Support */}
+                    <div>
+                        <h4 className="font-semibold text-lg text-white mb-4 flex items-center">
+                            <span className="w-2 h-2 bg-teal-400 rounded-full mr-2"></span>
+                            Support
+                        </h4>
+                        <ul className="space-y-3">
+                            <li>
+                                <Link href="/help" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Help Center
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/safety" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Safety
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/feedback" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Feedback
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/support" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                    <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    Live Support
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
 
-                <div className="flex flex-col col-span-2 mt-6 ">
-                    <h1 className="font-extrabold  ">Headquarter</h1>
-                    <address>
-                        100 daught a building,<br/>
-                        line 3/104, banani
-                    </address>
-                   
-                    <div className='mt-10'>
-                        <h1>Copyright @2024 Distance Learning</h1>
-                        <h1> Distance Learning</h1>
+                    {/* Contact Info */}
+                    <div>
+                        <h4 className="font-semibold text-lg text-white mb-4 flex items-center">
+                            <span className="w-2 h-2 bg-cyan-400 rounded-full mr-2"></span>
+                            Contact Info
+                        </h4>
+                        <div className="space-y-3">
+                            <div className="flex items-center text-emerald-100/70 text-sm">
+                                <span className="w-8 h-8 bg-cyan-500/20 rounded-lg flex items-center justify-center text-cyan-400 mr-3 border border-cyan-400/30">
+                                    ✉️
+                                </span>
+                                <div>
+                                    <p className="text-white font-medium">Email</p>
+                                    <p>babul1946@gmail.com</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center text-emerald-100/70 text-sm">
+                                <span className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400 mr-3 border border-emerald-400/30">
+                                    📞
+                                </span>
+                                <div>
+                                    <p className="text-white font-medium">Phone</p>
+                                    <p>+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center text-emerald-100/70 text-sm">
+                                <span className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center text-purple-400 mr-3 border border-purple-400/30">
+                                    🕒
+                                </span>
+                                <div>
+                                    <p className="text-white font-medium">Hours</p>
+                                    <p>24/7 Support</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Bottom Section */}
+                <div className="border-t border-white/10 pt-8">
+                    <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                        <div className="text-center md:text-left">
+                            <p className="text-emerald-100/60 text-sm">
+                                &copy; 2024 HouseRent. All rights reserved. Crafted with ❤️ for better living.
+                            </p>
+                        </div>
+                        <div className="flex items-center space-x-6 text-emerald-100/60">
+                            <span className="text-xs bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-400/30">
+                                🏠 Trusted Platform
+                            </span>
+                            <span className="text-xs bg-purple-500/20 px-3 py-1 rounded-full border border-purple-400/30">
+                                🔒 Secure & Safe
+                            </span>
+                            <span className="text-xs bg-cyan-500/20 px-3 py-1 rounded-full border border-cyan-400/30">
+                                ⭐ 5-Star Service
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-
-        
-                <div className="flex flex-col col-span-2 mt-6 ">
-                    <h1 className="font-extrabold mb-3 ">Newsletter Signup</h1>
-                    <form onSubmit={FormSubmitHandler} className="shadow-2xl py-10 px-5">
-                        <input type="email" onChange={(e)=>InputChange("email",e.target.value)} className="w-full px-2 py-2 bg-slate-600 text-slate-200 rounded-xl text-center outline-none"  placeholder="Email" />
-                        <input type="submit" value="Registrtion"  className="w-full  px-2 py-1 hover:text-slate-600 mt-3 text-center rounded-xl  bg-slate-700"/>
-                         
-                    </form>
-                    
-                    
+                {/* Decorative Elements */}
+                <div className="flex justify-center space-x-4 mt-6 opacity-50">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
                 </div>
-
-
-                <div className="flex flex-col col-span-2 mt-6  ">
-                    <div >
-                        <h1 className="font-extrabold  ">Contact Info</h1>
-                    <p>+65 3333 5435<br/> +65 3443 3233</p>
-                    <a href="#">babul1946@gmail.com</a>
-                    </div>
-
-                    <h1 className="font-extrabold  mt-7 ">Quick Links</h1>
-                    <ul>
-                        <li><Link href="/dashboard/pages/course">Course</Link></li>
-                        <li><Link href="/dashboard/pages/calender">Calender</Link></li>
-                        <li><Link href="/dashboard/pages/terms">Terms & condition</Link></li>
-                    </ul>
-
-                </div>
-
             </div>
-            </div>
-         </div>
-         
-         
+        </div>
     )
- }
- 
- export default Footer;
+}
+
+export default Footer;

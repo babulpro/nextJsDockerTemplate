@@ -14,7 +14,9 @@ export default function DeletePostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await fetch(`/api/user/userPostsStatus?id=${id}`);
+        const res = await fetch(`/api/user/userPostsStatus?id=${id}`, {
+          next: { revalidate: 60 } // Revalidate every 60 seconds
+        });
         const result = await res.json(); 
         if (result.status === "success") {
           setPost(result.data.post);
@@ -76,10 +78,11 @@ export default function DeletePostPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="text-center">
-          <div className="animate-spin h-16 w-16 border-t-4 border-b-4 border-indigo-600 rounded-full mx-auto mb-4"></div>
-          <p className="text-indigo-700 font-medium">Loading post details...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+        <div className="text-center backdrop-blur-lg bg-white/5 rounded-3xl p-8 border border-white/10 shadow-2xl">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-rose-500 mx-auto mb-6 shadow-lg shadow-rose-500/20"></div>
+          <p className="text-rose-100 font-medium text-lg">Loading property details...</p>
+          <p className="text-rose-100/60 text-sm mt-2">Please wait while we fetch your data</p>
         </div>
       </div>
     );
@@ -87,108 +90,153 @@ export default function DeletePostPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-white">
-        <div className="text-center bg-white p-8 rounded-xl shadow-lg">
-          <h2 className="text-2xl font-bold text-red-600 mb-2">Error</h2>
-          <p className="text-gray-700 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
-          >
-            Try Again
-          </button>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+        <div className="text-center backdrop-blur-lg bg-white/10 rounded-3xl p-8 border border-white/20 shadow-2xl max-w-md w-full">
+          <div className="w-20 h-20 bg-gradient-to-r from-rose-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-rose-400 text-3xl mx-auto mb-6 border border-rose-400/30 shadow-lg shadow-rose-500/10">
+            ⚠️
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-3">Oops! Something went wrong</h2>
+          <p className="text-rose-100/70 mb-6 leading-relaxed">{error}</p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => window.location.reload()}
+              className="flex-1 bg-gradient-to-r from-rose-500 to-pink-600 text-white px-6 py-3 rounded-xl hover:from-rose-600 hover:to-pink-700 transition-all duration-300 font-semibold shadow-lg shadow-rose-500/20 hover:shadow-rose-500/30"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => router.back()}
+              className="flex-1 bg-gradient-to-r from-slate-600 to-gray-700 text-white px-6 py-3 rounded-xl hover:from-slate-700 hover:to-gray-800 transition-all duration-300 font-semibold border border-white/20"
+            >
+              Go Back
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-white py-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-rose-900/50 to-slate-900 py-8">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Warning Header */}
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 rounded-lg mb-8">
-          <div className="flex items-start">
+        {/* Enhanced Warning Header */}
+        <div className="backdrop-blur-lg bg-gradient-to-r from-rose-500/20 to-pink-500/20 rounded-3xl border border-rose-400/30 p-8 mb-8 shadow-2xl shadow-rose-500/10 hover:shadow-rose-500/20 transition-all duration-500">
+          <div className="flex items-start gap-6">
             <div className="flex-shrink-0">
-              <svg className="h-8 w-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
+              <div className="w-16 h-16 bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-rose-500/20">
+                ⚠️
+              </div>
             </div>
-            <div className="ml-4">
-              <h1 className="text-2xl font-bold text-red-800 mb-2">Delete Post</h1>
-              <p className="text-red-700">
-                You are about to permanently delete this post. This action cannot be undone and all associated data will be lost.
+            <div className="flex-1">
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-rose-300 to-pink-300 bg-clip-text text-transparent mb-4">
+                Delete Property
+              </h1>
+              <p className="text-rose-100/80 text-lg leading-relaxed">
+                You are about to permanently delete this property listing. This action cannot be undone and all associated data including booking requests will be permanently lost.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Post Details */}
+        {/* Enhanced Post Details */}
         {post && (
-          <div className="bg-white shadow-lg rounded-2xl p-6 mb-8 border-2 border-red-200">
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/2">
+          <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 via-rose-500/5 to-white/5 rounded-3xl border border-rose-400/30 p-6 md:p-8 mb-8 shadow-2xl hover:shadow-3xl transition-all duration-500">
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="lg:w-2/5">
                 {post.images?.[0] ? (
-                  <img
-                    src={post.images[0]}
-                    alt={post.title}
-                    className="rounded-xl w-full h-64 object-cover border-2 border-red-300"
-                  />
+                  <div className="relative group">
+                    <img
+                      src={post.images[0]}
+                      alt={post.title}
+                      className="rounded-2xl w-full h-64 object-cover border border-rose-400/30 shadow-lg group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-rose-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
                 ) : (
-                  <div className="h-64 bg-gray-200 rounded-xl flex items-center justify-center text-gray-500 border-2 border-red-300">
-                    No Image
+                  <div className="h-64 bg-gradient-to-br from-rose-500/10 to-pink-500/10 rounded-2xl border border-rose-400/30 flex items-center justify-center text-rose-100/70 shadow-inner">
+                    <div className="text-center">
+                      <div className="text-5xl mb-3 opacity-60">🏠</div>
+                      <p className="text-lg">No Image Available</p>
+                    </div>
                   </div>
                 )}
               </div>
-              <div className="md:w-1/2 flex flex-col justify-center">
-                <h2 className="text-3xl font-bold text-gray-800 mb-3">
+              <div className="lg:w-3/5 flex flex-col justify-center space-y-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
                   {post.title}
                 </h2>
-                <div className="space-y-2 text-gray-700">
-                  <p className="flex items-center">
-                    <span className="text-red-500 mr-2">📍</span>
-                    {post.city}, {post.address}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="text-red-500 mr-2">💰</span>
-                    Rent Price:{" "}
-                    <span className="font-semibold text-red-600 ml-1">
-                      {post.rentPrice} {post.currency}
-                    </span>
-                  </p>
-                  <p className="flex items-center text-sm text-gray-600">
-                    <span className="text-red-500 mr-2">📅</span>
-                    Available: {formatDate(post.availableFrom)} → {formatDate(post.availableTo)}
-                  </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 text-rose-100/80 group">
+                    <div className="w-12 h-12 bg-gradient-to-r from-rose-500/20 to-pink-500/20 rounded-xl flex items-center justify-center border border-rose-400/30">
+                      <span className="text-rose-400 text-xl">📍</span>
+                    </div>
+                    <div>
+                      <div className="text-sm text-rose-100/60">Location</div>
+                      <div className="group-hover:text-white transition-colors">
+                        {post.city}, {post.address}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-rose-100/80 group">
+                    <div className="w-12 h-12 bg-gradient-to-r from-rose-500/20 to-pink-500/20 rounded-xl flex items-center justify-center border border-rose-400/30">
+                      <span className="text-rose-400 text-xl">💰</span>
+                    </div>
+                    <div>
+                      <div className="text-sm text-rose-100/60">Rent Price</div>
+                      <div className="font-semibold text-rose-300 text-xl group-hover:text-rose-200 transition-colors">
+                        {post.rentPrice} {post.currency}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-rose-100/80 group">
+                    <div className="w-12 h-12 bg-gradient-to-r from-rose-500/20 to-pink-500/20 rounded-xl flex items-center justify-center border border-rose-400/30">
+                      <span className="text-rose-400 text-xl">📅</span>
+                    </div>
+                    <div>
+                      <div className="text-sm text-rose-100/60">Availability</div>
+                      <div className="group-hover:text-white transition-colors">
+                        {formatDate(post.availableFrom)} → {formatDate(post.availableTo)}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Action Buttons */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg border-2 border-red-200">
+        {/* Enhanced Action Buttons */}
+        <div className="backdrop-blur-lg bg-gradient-to-br from-white/10 via-rose-500/5 to-white/5 rounded-3xl border border-rose-400/30 p-8 shadow-2xl hover:shadow-3xl transition-all duration-500">
           <div className="text-center">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">
-              Confirm Deletion
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Once deleted, this post cannot be recovered. Please make sure you want to proceed.
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gradient-to-r from-rose-500/20 to-pink-500/20 rounded-2xl flex items-center justify-center border border-rose-400/30">
+                <span className="text-rose-400 text-xl">🗑️</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-rose-300 to-pink-300 bg-clip-text text-transparent">
+                Confirm Deletion
+              </h3>
+            </div>
+            
+            <p className="text-rose-100/70 text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
+              Once deleted, this property listing and all its data cannot be recovered. 
+              Please make absolutely sure you want to proceed with this permanent action.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <button
                 onClick={handleDelete}
                 disabled={deleteLoading}
-                className="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg flex items-center justify-center"
+                className="bg-gradient-to-r from-rose-500 to-pink-600 text-white px-10 py-4 rounded-xl hover:from-rose-600 hover:to-pink-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg flex items-center justify-center gap-3 shadow-lg shadow-rose-500/20 hover:shadow-rose-500/30 hover:scale-105 min-w-64"
               >
                 {deleteLoading ? (
                   <>
-                    <div className="animate-spin h-5 w-5 border-t-2 border-b-2 border-white rounded-full mr-2"></div>
-                    Deleting...
+                    <div className="animate-spin h-6 w-6 border-2 border-white border-t-transparent rounded-full"></div>
+                    <span>Deleting Property...</span>
                   </>
                 ) : (
                   <>
-                    🗑️ Delete Post Permanently
+                    <span className="text-xl">🗑️</span>
+                    <span>Delete Property Permanently</span>
                   </>
                 )}
               </button>
@@ -196,16 +244,28 @@ export default function DeletePostPage() {
               <button
                 onClick={() => router.back()}
                 disabled={deleteLoading}
-                className="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition disabled:opacity-50 font-semibold text-lg"
+                className="bg-gradient-to-r from-slate-600 to-gray-700 text-white px-10 py-4 rounded-xl hover:from-slate-700 hover:to-gray-800 transition-all duration-300 disabled:opacity-50 font-semibold text-lg flex items-center justify-center gap-3 border border-white/20 shadow-lg hover:scale-105 min-w-48"
               >
-                ← Cancel
+                <span className="text-xl">←</span>
+                <span>Cancel</span>
               </button>
             </div>
             
-            <p className="text-xs text-gray-500 mt-4">
-              Note: This action requires double confirmation for security purposes.
-            </p>
+            <div className="mt-8 p-4 backdrop-blur-lg bg-rose-500/10 rounded-2xl border border-rose-400/20">
+              <p className="text-rose-200/80 text-sm flex items-center justify-center gap-2">
+                <span className="text-rose-400">🔒</span>
+                This action requires double confirmation for security purposes. All data will be permanently erased.
+              </p>
+            </div>
           </div>
+        </div>
+
+        {/* Security Notice */}
+        <div className="text-center mt-8">
+          <p className="text-rose-100/50 text-sm flex items-center justify-center gap-2">
+            <span>⚠️</span>
+            Deletion is immediate and irreversible. Proceed with caution.
+          </p>
         </div>
       </div>
     </div>
