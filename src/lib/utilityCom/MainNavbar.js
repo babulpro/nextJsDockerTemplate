@@ -185,16 +185,17 @@ const MainNavbar = () => {
                 </li>
                 <li>
                   <button
-                    onClick={logOut}
-                    className="btn btn-ghost hover:bg-red-500/20 hover:text-red-300 hover:border-red-400/30 text-emerald-100/80 transition-all duration-300 w-full justify-start"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className="loading loading-spinner loading-sm"></span>
-                    ) : (
-                      'Logout'
-                    )}
-                  </button>
+                      onClick={logOut}
+                      className="btn btn-ghost hover:bg-red-500/20 hover:text-red-300 hover:border-red-400/30 text-emerald-100/80 transition-all duration-300 w-full justify-start"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <span className="loading loading-spinner loading-sm"></span>
+                      ) : (
+                        'Logout'  // Ensure this text does not contain unescaped characters
+                      )}
+                    </button>
+
                 </li>
               </ul>
             </div>

@@ -257,7 +257,7 @@ export default function Home() {
               </h2>
               
               <p className="text-lg text-emerald-100/70 leading-relaxed">
-                Whether you're looking to rent a place or list your own, our
+                Whether you are looking to rent a place or list your own, our
                 platform makes it simple. Use location-based search to find 
                 nearby homes, and advertise your property in minutes.
               </p>
@@ -402,8 +402,8 @@ export default function Home() {
               </span>
             </h2>
             <p className="text-lg text-teal-100/80 max-w-3xl mx-auto leading-relaxed">
-              Understand your area's rental market, get insights into average rents,
-              and make smarter decisions whether you're renting or advertising.
+              Understand your areas rental market, get insights into average rents,
+              and make smarter decisions whether you are renting or advertising.
             </p>
           </div>
 

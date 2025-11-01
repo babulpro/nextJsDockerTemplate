@@ -24,7 +24,7 @@ export default function Hero() {
 
             <div className="space-y-4">
               <p className="text-lg text-emerald-100/70 leading-relaxed max-w-2xl">
-                Whether you're moving to Dhaka for work, studying in Chattogram,
+                Whether you&apos;re moving to Dhaka for work, studying in Chattogram,
                 or traveling abroad, HouseRent helps you find the right room or
                 house. Search, book, and live comfortably — anytime, anywhere.
               </p>
