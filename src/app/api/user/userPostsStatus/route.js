@@ -121,6 +121,9 @@ export async function PATCH(req) {
 }
 
 
+
+
+
  export async function DELETE(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -133,21 +136,35 @@ export async function PATCH(req) {
       );
     }
 
-    // Simple delete - Prisma cascade should handle related records
-    const deletedPost = await prisma.post.delete({
-      where: { id: postId }
+
+      const result = await prisma.$transaction(async (tx) => {
+      // 1. First, delete all bookings associated with this post
+      await tx.booking.deleteMany({
+        where: { postId: postId }
+      });
+
+      // 2. Then delete the post
+      const deletedPost = await tx.post.delete({
+        where: { id: postId }
+      });
+      
+      return deletedPost;
     });
 
-    return NextResponse.json({
+    
+    // Simple delete - Prisma cascade should handle related records
+    
+
+     return NextResponse.json({
       status: "success",
-      msg: "Post deleted successfully",
+      msg: "Post and all associated bookings deleted successfully",
       data: {
         deletedPost: {
-          id: deletedPost.id,
-          title: deletedPost.title
+          id: result.id,
+          title: result.title
         }
       }
-    });
+    });  
 
   } catch (error) {
     console.error("Delete post error:", error);
