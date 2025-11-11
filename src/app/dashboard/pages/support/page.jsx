@@ -230,18 +230,15 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-       
-      
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+      <div className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-6">
               How Can We Help You Today?
             </h1>
-            <p className="text-xl opacity-90 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-emerald-100/80 mb-8 max-w-3xl mx-auto">
               Get instant answers to your questions about renting, hosting, payments, and more. 
               Our support team is always here for you.
             </p>
@@ -249,13 +246,13 @@ export default function SupportPage() {
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto">
               <div className="relative">
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400">
                   🔍
                 </div>
                 <input
                   type="text"
                   placeholder="Search for help articles, FAQs, and guides..."
-                  className="w-full pl-12 pr-4 py-4 border-0 rounded-xl focus:ring-2 focus:ring-white focus:ring-opacity-50 bg-slate-600 bg-opacity-10 backdrop-blur-sm text-slate-200 placeholder-gray-200"
+                  className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-lg border border-emerald-400/30 rounded-xl text-white placeholder-emerald-200/50 focus:ring-2 ring-emerald-400 focus:border-emerald-400/50 transition-all duration-300"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -266,12 +263,12 @@ export default function SupportPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8 -mt-8 ">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar - Categories */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg border-0 p-6 sticky top-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6 pb-4 border-b">Help Categories</h3>
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 sticky top-6">
+              <h3 className="text-xl font-bold text-white mb-6 pb-4 border-b border-white/10">Help Categories</h3>
               <div className="space-y-2">
                 {supportCategories.map((category) => (
                   <button
@@ -280,14 +277,14 @@ export default function SupportPage() {
                       setActiveCategory(category.id);
                       setExpandedQuestion(null);
                     }}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 ${
                       activeCategory === category.id
-                        ? "bg-indigo-50 text-indigo-700 border-2 border-indigo-200 shadow-sm"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 border-2 border-transparent"
+                        ? "bg-emerald-500/20 text-emerald-300 border-2 border-emerald-400/30 shadow-lg shadow-emerald-500/10"
+                        : "text-emerald-100/70 hover:bg-white/5 hover:text-emerald-300 border-2 border-transparent"
                     }`}
                   >
                     <span className="font-semibold">{category.name}</span>
-                    <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs font-medium">
+                    <span className="bg-white/10 text-emerald-100 px-2 py-1 rounded-full text-xs font-medium border border-white/20">
                       {category.questions.length}
                     </span>
                   </button>
@@ -299,12 +296,12 @@ export default function SupportPage() {
           {/* Content Area */}
           <div className="lg:col-span-3">
             {/* FAQ Section */}
-            <div className="bg-white rounded-2xl shadow-lg border-0 p-6 mb-8">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 mb-8">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-white">
                   {supportCategories.find(cat => cat.id === activeCategory)?.name}
                 </h2>
-                <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium">
+                <span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium border border-emerald-400/30">
                   {filteredQuestions.length} questions
                 </span>
               </div>
@@ -314,29 +311,31 @@ export default function SupportPage() {
                   filteredQuestions.map((item, index) => (
                     <div 
                       key={index} 
-                      className="border border-gray-200 rounded-xl p-4 hover:shadow-md transition-all cursor-pointer"
+                      className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-emerald-400/30 hover:bg-emerald-500/10 transition-all duration-300 cursor-pointer group"
                       onClick={() => toggleQuestion(index)}
                     >
                       <div className="flex items-start justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                        <h3 className="text-lg font-semibold text-white pr-4 group-hover:text-emerald-300 transition-colors">
                           {item.question}
                         </h3>
-                        <span className="text-gray-400 text-xl flex-shrink-0">
+                        <span className="text-emerald-400 text-xl flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
                           {expandedQuestion === index ? '−' : '+'}
                         </span>
                       </div>
                       {expandedQuestion === index && (
-                        <p className="text-gray-600 mt-3 pl-2 border-l-4 border-indigo-300 py-1">
-                          {item.answer}
-                        </p>
+                        <div className="mt-4 pl-4 border-l-4 border-emerald-400/50">
+                          <p className="text-emerald-100/80 leading-relaxed">
+                            {item.answer}
+                          </p>
+                        </div>
                       )}
                     </div>
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <div className="text-6xl mb-4">🔍</div>
-                    <p className="text-gray-500 text-xl mb-2">No results found for "{searchQuery}"</p>
-                    <p className="text-gray-400">Try searching with different keywords or browse the categories</p>
+                    <div className="text-6xl mb-4 text-emerald-400">🔍</div>
+                    <p className="text-emerald-100/80 text-xl mb-2">No results found for "{searchQuery}"</p>
+                    <p className="text-emerald-100/60">Try searching with different keywords or browse the categories</p>
                   </div>
                 )}
               </div>
@@ -345,19 +344,19 @@ export default function SupportPage() {
             {/* Contact Methods */}
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               {contactMethods.map((method, index) => (
-                <div key={index} className="bg-white rounded-2xl shadow-lg border-0 p-6 text-center hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                <div key={index} className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 text-center hover:border-emerald-400/30 hover:bg-emerald-500/10 transition-all duration-300 group">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-full flex items-center justify-center text-emerald-400 text-2xl mx-auto mb-4 border border-emerald-400/30 group-hover:scale-110 transition-transform">
                     {index === 0 ? "💬" : index === 1 ? "📞" : "✉️"}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{method.title}</h3>
-                  <p className="text-gray-600 mb-3">{method.description}</p>
-                  <div className="flex items-center justify-center text-sm text-gray-500 mb-4">
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-emerald-300 transition-colors">{method.title}</h3>
+                  <p className="text-emerald-100/70 mb-3">{method.description}</p>
+                  <div className="flex items-center justify-center text-sm text-emerald-100/60 mb-4">
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full mr-2"></span>
                     {method.availability}
                   </div>
                   <button 
                     onClick={method.onClick}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-emerald-500/25"
                   >
                     {method.action}
                   </button>
@@ -366,17 +365,20 @@ export default function SupportPage() {
             </div>
 
             {/* Emergency Support */}
-            <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl p-6 text-white shadow-lg">
+            <div className="bg-gradient-to-r from-red-500/20 to-pink-500/20 rounded-2xl border border-red-400/30 p-6 text-white shadow-lg">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="text-center md:text-left">
-                  <h3 className="text-2xl font-bold mb-2">🚨 24/7 Emergency Support</h3>
-                  <p className="opacity-90 text-lg">
+                  <div className="flex items-center justify-center md:justify-start space-x-3 mb-2">
+                    <span className="text-2xl">🚨</span>
+                    <h3 className="text-2xl font-bold">24/7 Emergency Support</h3>
+                  </div>
+                  <p className="text-red-100/80 text-lg">
                     Need immediate assistance during your stay? Our emergency team is available round the clock.
                   </p>
                 </div>
                 <button 
                   onClick={handleEmergencyHelp}
-                  className="bg-white text-red-600 px-8 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl whitespace-nowrap text-lg"
+                  className="bg-gradient-to-r from-red-500 to-pink-600 text-white px-8 py-3 rounded-xl font-bold hover:from-red-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-red-500/25 whitespace-nowrap text-lg border border-red-400/30"
                 >
                   Emergency Help
                 </button>
@@ -385,8 +387,6 @@ export default function SupportPage() {
           </div>
         </div>
       </div>
-
-       
     </div>
   );
 }

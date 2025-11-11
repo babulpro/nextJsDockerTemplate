@@ -42,25 +42,25 @@ const Footer = () => {
                         </h4>
                         <ul className="space-y-3">
                             <li>
-                                <Link href="/about" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/about" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     About Us
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/contact" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/contact" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Contact
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/privacy" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/privacy" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Privacy
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/terms" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/terms" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-emerald-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Terms
                                 </Link>
@@ -76,25 +76,25 @@ const Footer = () => {
                         </h4>
                         <ul className="space-y-3">
                             <li>
-                                <Link href="/help" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/help" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Help Center
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/safety" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/safety" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Safety
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/feedback" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/feedBack" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Feedback
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/support" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
+                                <Link href="/footerLink/liveSupport" className="text-emerald-100/70 hover:text-emerald-300 transition-all duration-300 flex items-center group text-sm">
                                     <span className="w-1 h-1 bg-teal-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                                     Live Support
                                 </Link>
